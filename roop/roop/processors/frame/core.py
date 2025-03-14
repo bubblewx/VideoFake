@@ -56,6 +56,8 @@ def create_filtered_queue(temp_frame_paths: List[str], processor_name: str) -> Q
     for path in temp_frame_paths:
         if not any(proc_file in path for proc_file in processor_files):
             queue.put(path)
+        else:
+            print(f"{path} executed , ignore ")
     return queue
 
 def multi_process_frame(source_path: str, temp_frame_paths: List[str], process_frames: Callable[[str, List[str], Any], None], update: Callable[[], None], processor_name: str) -> None:
