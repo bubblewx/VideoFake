@@ -88,7 +88,7 @@ def suggest_execution_providers() -> List[str]:
 def suggest_execution_threads() -> int:
     if 'CUDAExecutionProvider' in onnxruntime.get_available_providers():
         return 16
-    return 1
+    return 8
 
 
 def limit_resources() -> None:
