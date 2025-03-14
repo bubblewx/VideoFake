@@ -98,11 +98,11 @@ def pick_queue(queue: Queue[str], queue_per_future: int) -> List[str]:
     return queues
 
 
-def process_video(source_path: str, frame_paths: list[str], process_frames: Callable[[str, List[str], Any], None]) -> None:
+def process_video(source_path: str, frame_paths: list[str], process_frames: Callable[[str, List[str], Any], None], processor_name: str) -> None:
     progress_bar_format = '{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]'
     total = len(frame_paths)
     with tqdm(total=total, desc='Processing', unit='frame', dynamic_ncols=True, bar_format=progress_bar_format) as progress:
-        multi_process_frame(source_path, frame_paths, process_frames, lambda: update_progress(progress))
+        multi_process_frame(source_path, frame_paths, process_frames, lambda: update_progress(progress), processor_name)
 
 
 def update_progress(progress: Any = None) -> None:
