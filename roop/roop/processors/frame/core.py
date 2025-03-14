@@ -46,8 +46,13 @@ def get_frame_processors_modules(frame_processors: List[str]) -> List[ModuleType
 
 
 def list_processor_files(processor_name: str) -> List[str]:
+
     """返回处理过的文件名列表"""
     process_dir = "/content/drive/MyDrive/process/"
+    # 检查目录是否存在
+    if not os.path.exists(process_dir):
+        print(f"Warning: Directory {process_dir} does not exist.")
+        return []
     processor_files = [
         os.path.basename(f) for f in os.listdir(process_dir) if f.startswith(processor_name)
     ]
