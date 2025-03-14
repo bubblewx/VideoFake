@@ -202,8 +202,12 @@ def start() -> None:
 
 
 def destroy() -> None:
+    process_dir = "/content/drive/MyDrive/process/"
     if roop.globals.target_path:
-        clean_temp(roop.globals.target_path)
+        if os.path.isdir(process_dir):
+            print(f"The directory {process_dir} exists. don't clean temp")
+        else:
+            clean_temp(roop.globals.target_path)
     sys.exit()
 
 
