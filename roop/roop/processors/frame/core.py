@@ -53,8 +53,9 @@ def list_processor_files(processor_name: str) -> List[str]:
         print(f"Warning: Directory {process_dir} does not exist.")
         return []
 
+
     processor_files = [
-        entry.name for entry in os.scandir(process_dir)
+        entry.name[len(processor_name):] for entry in os.scandir(process_dir)
         if entry.is_file() and entry.name.startswith(processor_name)
     ]
 
