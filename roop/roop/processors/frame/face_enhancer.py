@@ -9,7 +9,7 @@ from roop.core import update_status
 from roop.face_analyser import get_many_faces
 from roop.typing import Frame, Face
 from roop.utilities import conditional_download, resolve_relative_path, is_image, is_video
-
+import os
 FACE_ENHANCER = None
 THREAD_SEMAPHORE = threading.Semaphore()
 THREAD_LOCK = threading.Lock()
@@ -86,10 +86,17 @@ def process_frame(source_face: Face, reference_face: Face, temp_frame: Frame) ->
 
 
 def process_frames(source_path: str, temp_frame_paths: List[str], update: Callable[[], None]) -> None:
+    process_dir = "/content/drive/MyDrive/process/"
     for temp_frame_path in temp_frame_paths:
         temp_frame = cv2.imread(temp_frame_path)
         result = process_frame(None, None, temp_frame)
         cv2.imwrite(temp_frame_path, result)
+
+        # 创建空文件
+        filename = os.path.basename(temp_frame_path)
+        os.makedirs(os.path.dirname(process_dir), exist_ok=True)
+        empty_file_path = os.path.join(process_dir, NAME + filename)
+        open(empty_file_path, 'w').close()
         if update:
             update()
 
@@ -101,4 +108,4 @@ def process_image(source_path: str, target_path: str, output_path: str) -> None:
 
 
 def process_video(source_path: str, temp_frame_paths: List[str]) -> None:
-    roop.processors.frame.core.process_video(None, temp_frame_paths, process_frames)
+    roop.processors.frame.core.process_video(None, temp_frame_paths, process_frames, NAME)

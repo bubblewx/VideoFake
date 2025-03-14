@@ -45,10 +45,23 @@ def get_frame_processors_modules(frame_processors: List[str]) -> List[ModuleType
     return FRAME_PROCESSORS_MODULES
 
 
-def multi_process_frame(source_path: str, temp_frame_paths: List[str], process_frames: Callable[[str, List[str], Any], None], update: Callable[[], None]) -> None:
+
+def list_processor_files(processor_name: str) -> List[str]:
+    process_dir = "/content/drive/MyDrive/process/"
+    return [f[len(processor_name):] for f in os.listdir(process_dir) if f.startswith(processor_name)]
+
+def create_filtered_queue(temp_frame_paths: List[str], processor_name: str) -> Queue:
+    processor_files = list_processor_files(processor_name)
+    queue = Queue()
+    for path in temp_frame_paths:
+        if not any(proc_file in path for proc_file in processor_files):
+            queue.put(path)
+    return queue
+
+def multi_process_frame(source_path: str, temp_frame_paths: List[str], process_frames: Callable[[str, List[str], Any], None], update: Callable[[], None], processor_name: str) -> None:
     with ThreadPoolExecutor(max_workers=roop.globals.execution_threads) as executor:
         futures = []
-        queue = create_queue(temp_frame_paths)
+        queue = create_filtered_queue(temp_frame_paths, processor_name)
         queue_per_future = max(len(temp_frame_paths) // roop.globals.execution_threads, 1)
         while not queue.empty():
             future = executor.submit(process_frames, source_path, pick_queue(queue, queue_per_future), update)

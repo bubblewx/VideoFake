@@ -150,13 +150,19 @@ def start() -> None:
     update_status('Creating temporary resources...')
     create_temp(roop.globals.target_path)
     # extract frames
-    if roop.globals.keep_fps:
-        fps = detect_fps(roop.globals.target_path)
-        update_status(f'Extracting frames with {fps} FPS...')
-        extract_frames(roop.globals.target_path, fps)
+
+    process_dir = "/content/drive/MyDrive/process/"
+
+    if os.path.isdir(process_dir):
+        print(f"The directory {process_dir} exists. don;t extract")
     else:
-        update_status('Extracting frames with 30 FPS...')
-        extract_frames(roop.globals.target_path)
+        if roop.globals.keep_fps:
+            fps = detect_fps(roop.globals.target_path)
+            update_status(f'Extracting frames with {fps} FPS...')
+            extract_frames(roop.globals.target_path, fps)
+        else:
+            update_status('Extracting frames with 30 FPS...')
+            extract_frames(roop.globals.target_path)
     # process frame
     temp_frame_paths = get_temp_frame_paths(roop.globals.target_path)
     if temp_frame_paths:
