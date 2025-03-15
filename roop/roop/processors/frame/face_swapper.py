@@ -79,6 +79,7 @@ def process_frames(source_path: str, temp_frame_paths: List[str], update: Callab
     process_dir = "/content/drive/MyDrive/process/"
     reference_face = None if roop.globals.many_faces else get_face_reference()
     for temp_frame_path in temp_frame_paths:
+        print(f"temp_frame_path :{temp_frame_path}")
         temp_frame = cv2.imread(temp_frame_path)
         result = process_frame(source_face, reference_face, temp_frame)
         cv2.imwrite(temp_frame_path, result)
