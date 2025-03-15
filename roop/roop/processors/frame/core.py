@@ -74,9 +74,11 @@ def create_filtered_queue(temp_frame_paths: List[str], processor_name: str) -> Q
 
         # 判断文件是否已处理
         if file_name not in processor_files:
+            print(f"{file_name} added.")
             queue.put(path)
         else:
             print(f"{file_name} already executed, ignoring.")
+
 
     return queue
 
