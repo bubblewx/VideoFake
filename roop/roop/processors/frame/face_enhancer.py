@@ -91,6 +91,8 @@ def process_frames(source_path: str, temp_frame_paths: List[str], update: Callab
         print(f"enhencer temp_frame_path :{temp_frame_path}")
         temp_frame = cv2.imread(temp_frame_path)
         result = process_frame(None, None, temp_frame)
+
+        print(f"proces enhencer temp_frame_path :{temp_frame_path}")
         cv2.imwrite(temp_frame_path, result)
 
         # 创建空文件
