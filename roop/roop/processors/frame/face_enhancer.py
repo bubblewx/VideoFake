@@ -88,6 +88,7 @@ def process_frame(source_face: Face, reference_face: Face, temp_frame: Frame) ->
 def process_frames(source_path: str, temp_frame_paths: List[str], update: Callable[[], None]) -> None:
     process_dir = "/content/drive/MyDrive/process/"
     for temp_frame_path in temp_frame_paths:
+        print(f"enhencer temp_frame_path :{temp_frame_path}")
         temp_frame = cv2.imread(temp_frame_path)
         result = process_frame(None, None, temp_frame)
         cv2.imwrite(temp_frame_path, result)

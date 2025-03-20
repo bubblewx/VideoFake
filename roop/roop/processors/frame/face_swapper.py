@@ -62,7 +62,6 @@ def swap_face(source_face: Face, target_face: Face, temp_frame: Frame) -> Frame:
 
 def process_frame(source_face: Face, reference_face: Face, temp_frame: Frame) -> Frame:
     if roop.globals.many_faces:
-        print(f"temp_fram :{temp_frame}")
         many_faces = get_many_faces(temp_frame)
         if many_faces:
             for target_face in many_faces:
