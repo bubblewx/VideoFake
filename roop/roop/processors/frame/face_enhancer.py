@@ -89,10 +89,24 @@ def process_frames(source_path: str, temp_frame_paths: List[str], update: Callab
     process_dir = "/content/drive/MyDrive/process/"
     for temp_frame_path in temp_frame_paths:
         print(f"enhencer temp_frame_path :{temp_frame_path}")
-        temp_frame = cv2.imread(temp_frame_path)
-        result = process_frame(None, None, temp_frame)
 
-        print(f"proces enhencer temp_frame_path :{temp_frame_path}")
+        try:
+            temp_frame = cv2.imread(temp_frame_path)
+
+            # 检查是否成功读取图像
+            if temp_frame is None:
+                raise ValueError(f"Error: Unable to read image from path: {temp_frame_path}")
+
+            # 处理帧
+            result = process_frame(None, None, temp_frame)
+
+            print(f"proces enhancer temp_frame_path: {temp_frame_path}")
+            return result
+
+        except Exception as e:
+            print(f"Error processing frame {temp_frame_path}: {e}")
+            # 继续向外抛出异常
+            raise
         cv2.imwrite(temp_frame_path, result)
 
         # 创建空文件
